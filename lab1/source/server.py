@@ -21,7 +21,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             
      
                     
-            self.wfile.write(b"Hello World!\n<br>" + now.strftime("%B %d, %Y").encode())
+            self.wfile.write(b"Hello World!\n<br>" + now.strftime("%H:%M:%S").encode())
         else:
             super().do_GET()
     
