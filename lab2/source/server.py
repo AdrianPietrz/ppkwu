@@ -13,15 +13,22 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         print(self.path)
         now = datetime.datetime.now()
         
+        
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()    
-            
-     
+      
                     
-            self.wfile.write(b"Hello World!\n<br>" + now.strftime("%H:%M:%S").encode())
+            self.wfile.write(b"Hello World!\n<br>")
+        elif self.path == '/?cmd=time':
+       	    self.protocol_version = 'HTTP/1.1'
+            self.send_response(200)
+            self.send_header("Content-type", "text/html; charset=UTF-8")
+            self.end_headers()    
+                    
+            self.wfile.write(now.strftime("%H:%M:%S").encode())
         else:
             super().do_GET()
     
