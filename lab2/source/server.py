@@ -18,11 +18,11 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()    
-      
-                    
+            self.end_headers()     
             self.wfile.write(b"Hello World!\n<br>")
+            
         elif self.path == '/?cmd=time':
+            print('b')
        	    self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
@@ -30,7 +30,21 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     
             self.wfile.write(now.strftime("%H:%M:%S").encode())
         else:
-            super().do_GET()
+            param = self.path.split('&')
+            if(len(param) !=2) :
+                super().do_GET()
+                return
+            cmd = param[0]
+            cmd = cmd[2:].split('=')
+            str = param[1].split('=')
+            if cmd[0] == 'cmd' and cmd[1] == 'rev' and str[0] == 'str':
+                self.protocol_version = 'HTTP/1.1'
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=UTF-8")
+                self.end_headers()     
+                self.wfile.write(str[1][::-1].encode())
+            else:
+                super().do_GET()
     
 # --- main ---
 
